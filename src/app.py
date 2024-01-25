@@ -6,21 +6,26 @@ app = Flask(__name__)
 
 @app.route('/api/v1/convert-text', methods=['POST'])
 def convert_text():
+	# TODO: update code if needed
+	
     if not request.json or 'text' not in request.json:
         return jsonify({'error': 'No text provided'}), 400
 
-    text = request.json['text']
+    original_text = request.json['text']
+    accent = request.json['accent']
     try:
-        temp_text, words_and_positions = preprocess_text(text)
-        temp_text = add_diacritics(temp_text)
-        result = postprocess_text(temp_text)
-        return jsonify({'diacritizedText': result}), 200
+        words_and_infos = preprocess_text(original_text, accent)
+        words_and_infos = eds_process(words_and_infos)
+        result_text = postprocess_text(original_text, words_and_infos)
+        return jsonify({'diacritizedText': result_text}), 200
     # pylint: disable=broad-exception-caught
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
 
-def preprocess_text(text):
+def preprocess_text(original_text, accent):
+	# TODO: update code
+	
     words_and_positions = []
     word_pattern = r'\b\w+\b'
 
@@ -33,27 +38,18 @@ def preprocess_text(text):
         }
         words_and_positions.append(word_info)
 
-    # Proceed with text cleaning and standardization
-    cleaned_text = clean_and_standardize_text(text)
 
-    return cleaned_text, words_and_positions
+    return words_and_infos
 
 
-def clean_and_standardize_text(text):
-    # Implement text cleaning (e.g., removing unnecessary characters)
-    # and standardization (e.g., case normalization)
-    # Example: text = text.lower().strip()
-    return text.lower()
+def eds_process(words_and_infos):
+    # TODO: implement
+    return updated_words_and_infos
 
 
-def add_diacritics(text):
-    # Implement the core logic for diacritic placement
-    return text
-
-
-def postprocess_text(text):
-    # Implement any final adjustments
-    return text
+def postprocess_text(original_text, words_and_infos):
+    # TODO: implement
+    return result_text
 
 
 if __name__ == '__main__':
