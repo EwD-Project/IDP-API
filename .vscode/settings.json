@@ -1,0 +1,28 @@
+{
+  "editor.fontFamily": "'Droid Sans Mono', 'monospace', monospace",
+  "editor.letterSpacing": -0.35,
+
+  "[plaintext]": {
+    "editor.fontFamily": "'Noto Sans', 'Droid Sans Mono', 'monospace', monospace",
+    "editor.letterSpacing": 0.1
+  },
+
+  // extend plaintext settings to other files
+  "files.associations": {
+    "*.plaintext": "plaintext",
+    "**/src/common/preliminary_replacements.py": "plaintext"
+  },
+
+  "[python]": {
+    "editor.tabSize": 4,
+    "editor.formatOnSave": true,
+    "editor.detectIndentation": false,
+    "editor.defaultFormatter": "ms-python.autopep8",
+    "editor.rulers": [80]
+  },
+  "autopep8.args": ["--max-line-length=79"],
+
+  "python.analysis.typeCheckingMode": "basic",
+  "python.analysis.autoImportCompletions": true,
+  "python.analysis.autoFormatStrings": true
+}
