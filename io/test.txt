@@ -1,0 +1,5 @@
+ | phonemize -l en-us -b espeak --tie --with-stress
+
+ 
+
+This tool allows simple phonemization of words and texts in many languages.

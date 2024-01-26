@@ -1,0 +1,4 @@
+Flask==3.0.1
+flask-swagger-ui==4.11.1
+flasgger==0.9.7.1
+phonemizer==3.2.1
