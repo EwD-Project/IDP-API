@@ -1,7 +1,6 @@
-import re
 from flask import Flask, request, jsonify
-from flask_swagger_ui import get_swaggerui_blueprint
-from flasgger import Swagger
+from flask_swagger_ui import get_swaggerui_blueprint   # type: ignore
+from flasgger import Swagger   # type: ignore
 
 from services.phonetics_service import PhoneticsService
 from services.text_service import TextService
@@ -26,7 +25,7 @@ text_service = TextService()
 @app.route('/api/v1/get-phonefied-text', methods=['POST'])
 def get_phonefied_text():
     """
-    Returns the phonemized version of the provided text.
+    Returns the phonefied version of the provided text.
     ---
     parameters:
       - in: body
@@ -62,8 +61,40 @@ def get_phonefied_text():
         return jsonify({'error': str(e)}), 500
 
 
-@app.route('/api/v1/convert-text', methods=['POST'])
-def convert_text():
+@app.route('/api/v1/convert-en-to-ewd', methods=['POST'])
+def convert_en_to_ewd():
+    """
+    Converts Standard English text to English with Diacritics (EwD).
+    ---
+    parameters:
+      - in: body
+        name: body
+        schema:
+          type: object
+          properties:
+            text:
+              type: string
+              description: Standard English text to be converted
+              example: "This is a test."
+            accent:
+              type: string
+              description: English accent to be used for conversion
+              example: "en-us"
+        required: true
+    responses:
+      200:
+        description: Text successfully converted to EwD
+        schema:
+          type: object
+          properties:
+            converted_text:
+              type: string
+              example: "Thĭs ĭs ă tĕst."
+      400:
+        description: Bad request - Text not provided or invalid format
+      500:
+        description: Internal server error
+    """
     if not request.json or 'text' not in request.json:
         return jsonify({'error': 'No text provided'}), 400
 
@@ -71,8 +102,8 @@ def convert_text():
     accent = request.json.get('accent', 'en-us')
 
     try:
-        result_text = text_service.convert_text(input_text, accent)
-        return jsonify({'converted_text': result_text}), 200
+        result = text_service.convert_en_to_ewd(input_text, accent)
+        return jsonify({'converted_text': result}), 200
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 

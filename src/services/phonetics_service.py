@@ -1,12 +1,13 @@
-from phonemizer import phonemize
 
-from enums.accent import Accent
 from enums.phoneme import Phoneme
+
+from phonemizer import phonemize  # type: ignore
+from phonemizer.separator import Separator  # type: ignore
 
 
 class PhoneticsService:
     @staticmethod  # type: ignore
-    def phonefy_text(text, accent):
+    def phonefy_text(text: str, accent: str):
         """
         Uses the phonemizer library to get the phones of a text.
 
@@ -32,7 +33,8 @@ class PhoneticsService:
             strip=True,
             preserve_punctuation=False,
             with_stress=True,
-            tie=True,
+            # tie=True,
+            separator=Separator(phone='-', syllable='|', word=' ')
         ))
 
         print('phonefied_text:')
@@ -41,13 +43,13 @@ class PhoneticsService:
         return phonefied_text.split()
 
     @staticmethod  # type: ignore
-    def get_phoneme_from_phone(phone, accent):
+    def get_phoneme_from_phone(phone: str, accent: str):
         """
         Maps a phone string to a Phoneme based on the specified Accent.
 
         Args:
         phone (str): The phone string.
-        accent (Accent): The specified accent.
+        accent (str): The specified accent.
 
         Returns:
         Phoneme: The corresponding phoneme.
@@ -56,7 +58,7 @@ class PhoneticsService:
         # Example mapping logic
         mapping = {
             'espeak': {
-                Accent.AMERICAN: {
+                'en-us': {
                     # Paired Vowels
                     'e͡ɪ': Phoneme.long_a,
                     'æ': Phoneme.short_a,
@@ -104,7 +106,7 @@ class PhoneticsService:
                     # 'v': Phoneme.v,
                     # 'w': Phoneme.w,
                 },
-                Accent.BRITISH: {
+                'en-gb': {
                     # unimplemented
                 }
             }

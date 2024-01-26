@@ -1,7 +1,6 @@
-from ast import Dict
 import re
-from typing import List, SupportsIndex, Union
 
+from models.word_info import WordInfo
 from services.phonetics_service import PhoneticsService
 
 
@@ -10,78 +9,99 @@ class TextService:
         self.phonetics_service = PhoneticsService()
         self.word_pattern = r'\b\w+\b'
 
-    def convert_text(self, input_text, accent):
+    def convert_en_to_ewd(self, input_text: str, accent: str):
+        #
+        # Pre process
+        #
         word_infos = self.preprocess_text(input_text, accent)
-        word_infos = self.append_phones_to_word_infos(word_infos, input_text)
-        word_infos = self.eds_process(word_infos)
-        return self.postprocess_text(
-            input_text, word_infos)
 
-    def preprocess_text(self, input_text, accent='en-us'):
-        word_infos = []
+        #
+        # Main process
+        #
+
+        word_infos_with_phones = self.append_phones(
+            word_infos, input_text)
+        print('word_infos_with_phones:')
+        print(word_infos_with_phones)
+
+        word_infos_with_ewd_words = self.append_ewd_words(
+            word_infos_with_phones)
+        print('word_infos_with_ewd_words:')
+        print(word_infos_with_ewd_words)
+
+        #
+        # Post process
+        #
+        return self.postprocess_text(input_text, word_infos_with_ewd_words)
+
+    def preprocess_text(self, input_text: str, accent: str = 'en-us') -> list[WordInfo]:
+        word_infos: list[WordInfo] = []
 
         # Finding words, their positions, and cases
         for match in re.finditer(self.word_pattern, input_text):
             word = match.group()
-            word_info = {
-                'word': word,
-                'start_pos': match.start(),
-                'end_pos': match.end(),
-                'case': 'upper' if word.isupper() else 'lower' if word.islower() else 'title' if word.istitle() else 'mixed',
-            }
+            word_info = WordInfo(
+                en_word=word,
+                phones='',
+                ewd_word='',
+                case='upper' if word.isupper() else 'lower' if word.islower(
+                ) else 'title' if word.istitle() else 'mixed',
+                start_pos=match.start(),
+                end_pos=match.end()
+            )
             word_infos.append(word_info)
 
         return word_infos
 
-    def append_phones_to_word_infos(self, word_infos, input_text, accent='en-us'):
-        phonefied_words = self.phonetics_service.phonefy_text(
+    def append_phones(self,
+                      word_infos: list[WordInfo],
+                      input_text: str,
+                      accent: str = 'en-us'):
+
+        phonefied_words: list[str] = self.phonetics_service.phonefy_text(
             input_text, accent)
 
-        for index in range(len(word_infos)):  # type: ignore
+        for index in range(len(word_infos)):
             if index < len(phonefied_words):
-                word_infos[index]['phones'] = phonefied_words[index]  # type: ignore # nopep8
+                word_info = word_infos[index]
+                word_info.phones = phonefied_words[index]
             else:
                 # Handle the case where phonefied_words is shorter than word_infos
                 break
 
         return word_infos
 
-    def get_phonemes(self, word, accent):
-        # Implement phoneme retrieval logic based on the word and accent
-        return []
+    # def get_phonemes(self, word, accent):
+    #     # Implement phoneme retrieval logic based on the word and accent
+    #     return []
 
-    def eds_process(self, words_and_infos):
-        updated_words_and_infos = []
+    def append_ewd_words(self, word_infos_with_phones: list[WordInfo]) -> list[WordInfo]:
+        word_infos_with_ewd_words: list[WordInfo] = []
 
-        for word_info in words_and_infos:
-            # Logic to apply EDS and get EwD grapheme
-            # Function to apply EDS, to be implemented
-            ewd_grapheme = self.apply_eds_to_word(
-                word_info['word'], word_info['phonemes'])
-            word_info['ewd_word'] = ewd_grapheme
-            updated_words_and_infos.append(word_info)
+        for word_info in word_infos_with_phones:
+            word_info.ewd_word = self.get_ewd_word(word_info)
 
-        return updated_words_and_infos
+        return word_infos_with_ewd_words
 
-    def apply_eds_to_word(self, word, phonemes):
-        # TODO: Implement EDS logic to convert word to EwD based on phonemes
-        return word
+    def get_ewd_word(self, word_info: WordInfo) -> str:
 
-    def postprocess_text(self, input_text, words_and_infos):
+        return word_info.en_word
+
+    def postprocess_text(self, input_text: str, word_infos: list[WordInfo]):
         result_text = input_text
-        offset = 0
+        offset: int = 0
 
-        for word_info in words_and_infos:
-            ewd_word = word_info['ewd_word']
-            start_pos = word_info['start_pos'] + offset
-            end_pos = word_info['end_pos'] + offset
+        for word_info in word_infos:
+            ewd_word = word_info.ewd_word
+            start_pos = word_info.start_pos + offset
+            end_pos = word_info.end_pos + offset
 
             # Adjust case
-            if word_info['case'] == 'upper':
+            if word_info.case == 'upper':
                 ewd_word = ewd_word.upper()
-            elif word_info['case'] == 'lower':
+            elif word_info.case == 'lower':
                 ewd_word = ewd_word.lower()
-            elif word_info['case'] == 'title':
+            elif word_info.case == 'title':
                 ewd_word = ewd_word.title()
 
             result_text = result_text[:start_pos] + \

@@ -22,7 +22,7 @@
   },
   "autopep8.args": ["--max-line-length=79"],
 
-  "python.analysis.typeCheckingMode": "basic",
+  "python.analysis.typeCheckingMode": "strict",
   "python.analysis.autoImportCompletions": true,
   "python.analysis.autoFormatStrings": true
 }
