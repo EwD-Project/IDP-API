@@ -25,7 +25,7 @@ class PhoneticsService:
         # }
 
         # Phonemize the text
-        phonefied_text = phonemize(
+        phonefied_text = str(phonemize(
             text,
             language=accent,
             backend='espeak',
@@ -33,12 +33,12 @@ class PhoneticsService:
             preserve_punctuation=False,
             with_stress=True,
             tie=True,
-        )
+        ))
 
         print('phonefied_text:')
         print(phonefied_text)
 
-        return phonefied_text
+        return phonefied_text.split()
 
     @staticmethod  # type: ignore
     def get_phoneme_from_phone(phone, accent):

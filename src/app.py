@@ -3,7 +3,6 @@ from flask import Flask, request, jsonify
 from flask_swagger_ui import get_swaggerui_blueprint
 from flasgger import Swagger
 
-from enums.accent import Accent
 from services.phonetics_service import PhoneticsService
 from services.text_service import TextService
 
@@ -68,11 +67,11 @@ def convert_text():
     if not request.json or 'text' not in request.json:
         return jsonify({'error': 'No text provided'}), 400
 
-    original_text = request.json['text']
+    input_text = request.json['text']
     accent = request.json.get('accent', 'en-us')
 
     try:
-        result_text = text_service.convert_text(original_text, accent)
+        result_text = text_service.convert_text(input_text, accent)
         return jsonify({'converted_text': result_text}), 200
     except Exception as e:
         return jsonify({'error': str(e)}), 500
