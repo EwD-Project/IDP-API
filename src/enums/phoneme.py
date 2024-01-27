@@ -1,5 +1,7 @@
 from enum import Enum, auto
 
+from enums.enums import PhonemeType, VowelLength
+
 
 class Phoneme(Enum):
     unimplemented = auto()
@@ -24,17 +26,17 @@ class Phoneme(Enum):
     schwa = auto()
 
     # Rhotic Vowels
-    r_a = auto()
-    r_ah = auto()
-    r_e = auto()
-    r_i = auto()
-    r_o = auto()
-    r_u = auto()
-    r_stressed_neutral = auto()
-    r_oo = auto()
-    r_aw = auto()
-    r_ow = auto()
-    r_schwa = auto()
+    rhotic_a = auto()
+    rhotic_ah = auto()
+    rhotic_e = auto()
+    rhotic_i = auto()
+    rhotic_o = auto()
+    rhotic_u = auto()
+    rhotic_stressed_neutral = auto()
+    rhotic_oo = auto()
+    rhotic_aw = auto()
+    rhotic_ow = auto()
+    rhotic_schwa = auto()
 
     # Paired Consonants
     p = auto()
@@ -68,3 +70,25 @@ class Phoneme(Enum):
     w = auto()
     wh = auto()
     y = auto()
+
+    def get_type(self) -> PhonemeType:
+        if self.is_basic_long_or_short_vowel():
+            return PhonemeType.NON_RHOTIC_VOWEL
+        if self in [Phoneme.long_oo, Phoneme.short_oo, Phoneme.ah, Phoneme.oy, Phoneme.aw, Phoneme.ow]:
+            return PhonemeType.NON_RHOTIC_VOWEL
+        # TODO
+        return PhonemeType.UNTREATED
+
+    def is_basic_long_or_short_vowel(self) -> bool:
+        if self in [Phoneme.long_a, Phoneme.long_e, Phoneme.long_i, Phoneme.long_o, Phoneme.long_u]:
+            return True
+        if self in [Phoneme.short_a, Phoneme.short_e, Phoneme.short_i, Phoneme.short_o, Phoneme.short_u]:
+            return True
+        return False
+
+    def get_non_rhotic_vowel_length(self) -> VowelLength:
+        if self in [Phoneme.long_a, Phoneme.long_e, Phoneme.long_i, Phoneme.long_o, Phoneme.long_u, Phoneme.long_oo]:
+            return VowelLength.LONG
+        if self in [Phoneme.short_a, Phoneme.short_e, Phoneme.short_i, Phoneme.short_o, Phoneme.short_u, Phoneme.short_oo]:
+            return VowelLength.SHORT
+        raise ValueError('Expected a non-rhotic long/short vowel.')

@@ -12,12 +12,12 @@ class TextService:
 
     def convert_en_to_ewd(self, input_text: str, accent: str):
         #
-        # Pre process
+        # Preprocess
         #
         word_infos = self.preprocess_text(input_text)
 
         #
-        # Main process
+        # Main Process
         #
 
         word_infos_with_phones = self.append_phones(
@@ -26,14 +26,18 @@ class TextService:
         print(word_infos_with_phones)
 
         word_infos_with_ewd_words = self.append_ewd_words(
-            word_infos_with_phones)
+            word_infos_with_phones, accent)
         print('word_infos_with_ewd_words:')
         print(word_infos_with_ewd_words)
 
         #
-        # Post process
+        # Postprocess
         #
         return self.postprocess_text(input_text, word_infos_with_ewd_words)
+
+    #
+    # Preprocess
+    #
 
     def preprocess_text(self, input_text: str) -> list[WordInfo]:
         word_infos: list[WordInfo] = []
@@ -54,27 +58,40 @@ class TextService:
 
         return word_infos
 
-    def append_phones(self,
-                      word_infos: list[WordInfo],
-                      input_text: str,
-                      accent: str):
+    #
+    # Main Process
+    #
+
+    def append_phones(self, word_infos: list[WordInfo], input_text: str, accent: str) -> list[WordInfo]:
+        """
+        Appends phonetic representations (phones) to each word in the given list of WordInfo objects.
+
+        This method retrieves the phonetic representation of the entire input text and then
+        associates each phone sequence with the corresponding word in the word_infos list.
+
+        Args:
+            word_infos (list[WordInfo]): A list of WordInfo objects containing words from the input text.
+            input_text (str): The original text from which the words were extracted.
+            accent (str): The accent to use for phonetic conversion.
+
+        Returns:
+            list[WordInfo]: The list of WordInfo objects with appended phonetic representations.
+
+        Raises:
+            ValueError: If the number of words in the input text does not match the number of phonetic representations returned.
+        """
 
         phonefied_words = self.phonetics_service.phonefy_text(
             input_text, accent)
 
-        for index in range(len(word_infos)):
-            if index < len(phonefied_words):
-                word_info = word_infos[index]
-                word_info.phones = phonefied_words[index]
-            else:
-                # Handle the case where phonefied_words is shorter than word_infos
-                break
+        if len(phonefied_words) != len(word_infos):
+            raise ValueError(
+                "Mismatch in word and phonetic representation counts.")
+
+        for index, phone in enumerate(phonefied_words):
+            word_infos[index].phones = phone
 
         return word_infos
-
-    # def get_phonemes(self, word, accent):
-    #     # Implement phoneme retrieval logic based on the word and accent
-    #     return []
 
     def append_ewd_words(self, word_infos_with_phones: list[WordInfo], accent: str) -> list[WordInfo]:
         word_infos_with_ewd_words: list[WordInfo] = []
@@ -85,14 +102,59 @@ class TextService:
         return word_infos_with_ewd_words
 
     def get_ewd_word(self, word_info: WordInfo, accent: str) -> str:
+        word = word_info.en_word
+        edw_graphemes: list[str] = []
         phonemes = self.get_phonemes(word_info.phones, accent)
-        phoneme_index = 0
-        word_length = len(word_info.en_word)
+        print(f"'{word_info.en_word}' phonemes:")
+        print(phonemes)
 
-        for letter_index in range(word_length):
-            if word_length >= 2:
-                
-                 
+        letter_index = 0
+        phoneme_index = 0
+        while letter_index < len(word) and phoneme_index < len(phonemes):
+            remaining_letters = word[letter_index:]
+            phoneme = phonemes[phoneme_index]
+
+            # Get max letter group size up to 3
+            max_letter_group_size: int
+            if len(remaining_letters) > 3:
+                max_letter_group_size = 3
+            else:
+                max_letter_group_size = len(remaining_letters)
+
+            # Iterate letter groups reversely
+            for letter_group_length in range(max_letter_group_size, -1, -1):
+                # Get letter group
+                letter_group = remaining_letters[letter_index:letter_index+letter_group_length]  # nopep8
+                print(f'letter_group: {letter_group}')
+
+                # Get next 2, 1 or 0 letters
+                next_letters_after_group = remaining_letters[max_letter_group_size:]
+                next_letters_size: int
+                if len(next_letters_after_group) > 2:
+                    next_letters_size = 2
+                else:
+                    next_letters_size = len(next_letters_after_group)
+                next_letters = next_letters_after_group[0:next_letters_size]
+                print(f'next_letters: {next_letters}')
+
+                # TODO: Get and append EwD grapheme if found one
+                ewd_grapheme = self.phonetics_service.get_ewd_grapheme(
+                    letter_group,
+                    next_letters,
+                    phoneme
+                )
+                if (ewd_grapheme):
+                    edw_graphemes.append(ewd_grapheme)
+                    letter_index += len(letter_group)
+                    phoneme_index += 1
+                    break
+                else:
+                    # If no EwD grapheme is to be found, append original letter
+                    if letter_group_length == 1:
+                        edw_graphemes.append(letter_group)
+                        letter_index += 1
+                        phoneme_index += 1
+                        break
 
         return word_info.en_word
 
@@ -105,6 +167,10 @@ class TextService:
                 self.phonetics_service.get_phoneme_from_phone(phone, accent))
 
         return phonemes
+
+    #
+    # Postprocess
+    #
 
     def postprocess_text(self, input_text: str, word_infos: list[WordInfo]):
         result_text = input_text
