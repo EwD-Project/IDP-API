@@ -1,8 +1,11 @@
 
-from enums.phoneme import Phoneme
-
 from phonemizer import phonemize  # type: ignore
-from phonemizer.separator import Separator  # type: ignore
+from phonemizer.separator import Separator
+from enums.letter_type import LetterType
+from enums.phoneme import Phoneme
+from enums.vowel_naturality import VowelNaturality  # type: ignore
+
+from mappings.mappings import phone_to_phoneme_mapping
 
 
 class PhoneticsService:
@@ -43,7 +46,7 @@ class PhoneticsService:
         return phonefied_text.split()
 
     @staticmethod  # type: ignore
-    def get_phoneme_from_phone(phone: str, accent: str):
+    def get_phoneme_from_phone(phone: str, accent: str) -> Phoneme:
         """
         Maps a phone string to a Phoneme based on the specified Accent.
 
@@ -56,61 +59,48 @@ class PhoneticsService:
         """
 
         # Example mapping logic
-        mapping = {
-            'espeak': {
+
+        # Returns None if the phone is not found
+        return phone_to_phoneme_mapping['espeak'][accent].get(phone, Phoneme.unimplemented)
+    
+
+    def get_ewd_grapheme_from_en_grapheme(self, ewd_grapheme: str, next_letters: str) -> str:
+        mapping = {}
+
+        if self.is_monograph_vowel(ewd_grapheme):
+            nat = self.get_vowel_naturality(ewd_grapheme, next_letters)
+
+            mapping = {
                 'en-us': {
-                    # Paired Vowels
-                    'e͡ɪ': Phoneme.long_a,
-                    'æ': Phoneme.short_a,
-                    'iː': Phoneme.long_e,
-                    'ɛ': Phoneme.short_e,
-                    'a͡ɪ': Phoneme.long_i,
-                    'ɪ': Phoneme.short_i,
-                    'ᵻ': Phoneme.short_i,
-                    'o͡ʊ': Phoneme.long_o,
-                    'ɑː': Phoneme.short_o,
-                    'juː': Phoneme.long_u,
-                    'ʌ': Phoneme.short_u,
-                    'uː': Phoneme.long_oo,
-                    'ʊ': Phoneme.short_oo,
-
-                    # Unpaired Vowels
-                    'ɑː': Phoneme.ah,
-                    'ɔ͡ɪ': Phoneme.oy,
-                    'ɔː': Phoneme.aw,
-                    'a͡ʊ': Phoneme.ow,
-                    'ɐ': Phoneme.schwa,
-                    'ə': Phoneme.schwa,
-
-                    # TODO: from here below, pending
-
-                    # Rhotic Vowels
-                    # 'ɑː͡ɹ': Phone
-
-                    # Consonants
-                    # 'd': Phoneme.d,
-                    # 'f': Phoneme.f,
-                    # 'g': Phoneme.g,
-                    # 'h': Phoneme.h,
-                    # 'k': Phoneme.k,
-                    # 'l': Phoneme.l,
-                    # 'm': Phoneme.m,
-                    # 'n': Phoneme.n,
-                    # 'ŋ': Phoneme.ng,
-                    # 'p': Phoneme.p,
-                    # 'r': Phoneme.r,
-                    # 'ɚr': Phoneme.r_schwa,
-                    # 'ɚ': Phoneme.r_schwa,
-                    # 't͡ʃ': Phoneme.ch,
-                    # 'θ': Phoneme.unvoiced_th,
-                    # 'v': Phoneme.v,
-                    # 'w': Phoneme.w,
+                    'a': {
+                        Phoneme.long_a: 'a' if nat == N else 'ā', 
+                    }
                 },
                 'en-gb': {
                     # unimplemented
                 }
-            }
         }
+            
+    def get_vowel_with_diacritic(self, monograph_vowel: str, next_letters: str, phoneme: Phoneme) -> str:
+        if len(next_letters) == 1:
+            next_letter_type = self.get_letter_type(next_letters[0])
+            if next_letter_type == LetterType.CONSONANT:
+                return monograph_vowel + chr(304)
+        if len(next_letters) == 2:
+            next_letter_type_1 = self.get_letter_type(next_letters[0])
+            next_letter_type_2 = self.get_letter_type(next_letters[1])
+            if next_letter_type_1 == next_letter_type_2 == LetterType.CONSONANT:
+                return monograph_vowel + 
 
-        # Returns None if the phone is not found
-        return mapping['espeak'][accent].get(phone, None)
+
+    def is_monograph_vowel(self, ewd_grapheme: str) -> bool:
+        if ewd_grapheme in ['a', 'e', 'i', 'y', 'o', 'u']:
+            return True
+        return False
+
+
+    def get_letter_type(self, letter: str) -> LetterType:
+        if letter in ['a', 'e', 'i', 'y' 'o', 'u']:
+            return LetterType.VOWEL
+        return LetterType.CONSONANT
+

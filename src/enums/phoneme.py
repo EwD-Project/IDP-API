@@ -2,6 +2,8 @@ from enum import Enum, auto
 
 
 class Phoneme(Enum):
+    unimplemented = auto()
+
     # Non-Rhotic Vowels
     long_a = auto()
     short_a = auto()

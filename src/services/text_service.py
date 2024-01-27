@@ -1,4 +1,5 @@
 import re
+from enums.phoneme import Phoneme
 
 from models.word_info import WordInfo
 from services.phonetics_service import PhoneticsService
@@ -13,14 +14,14 @@ class TextService:
         #
         # Pre process
         #
-        word_infos = self.preprocess_text(input_text, accent)
+        word_infos = self.preprocess_text(input_text)
 
         #
         # Main process
         #
 
         word_infos_with_phones = self.append_phones(
-            word_infos, input_text)
+            word_infos, input_text, accent)
         print('word_infos_with_phones:')
         print(word_infos_with_phones)
 
@@ -34,7 +35,7 @@ class TextService:
         #
         return self.postprocess_text(input_text, word_infos_with_ewd_words)
 
-    def preprocess_text(self, input_text: str, accent: str = 'en-us') -> list[WordInfo]:
+    def preprocess_text(self, input_text: str) -> list[WordInfo]:
         word_infos: list[WordInfo] = []
 
         # Finding words, their positions, and cases
@@ -56,9 +57,9 @@ class TextService:
     def append_phones(self,
                       word_infos: list[WordInfo],
                       input_text: str,
-                      accent: str = 'en-us'):
+                      accent: str):
 
-        phonefied_words: list[str] = self.phonetics_service.phonefy_text(
+        phonefied_words = self.phonetics_service.phonefy_text(
             input_text, accent)
 
         for index in range(len(word_infos)):
@@ -75,17 +76,35 @@ class TextService:
     #     # Implement phoneme retrieval logic based on the word and accent
     #     return []
 
-    def append_ewd_words(self, word_infos_with_phones: list[WordInfo]) -> list[WordInfo]:
+    def append_ewd_words(self, word_infos_with_phones: list[WordInfo], accent: str) -> list[WordInfo]:
         word_infos_with_ewd_words: list[WordInfo] = []
 
         for word_info in word_infos_with_phones:
-            word_info.ewd_word = self.get_ewd_word(word_info)
+            word_info.ewd_word = self.get_ewd_word(word_info, accent)
 
         return word_infos_with_ewd_words
 
-    def get_ewd_word(self, word_info: WordInfo) -> str:
+    def get_ewd_word(self, word_info: WordInfo, accent: str) -> str:
+        phonemes = self.get_phonemes(word_info.phones, accent)
+        phoneme_index = 0
+        word_length = len(word_info.en_word)
+
+        for letter_index in range(word_length):
+            if word_length >= 2:
+                
+                 
 
         return word_info.en_word
+
+    def get_phonemes(self, phones: str, accent: str) -> list[Phoneme]:
+        split_phones = phones.split('-')
+        phonemes: list[Phoneme] = []
+
+        for phone in split_phones:
+            phonemes.append(
+                self.phonetics_service.get_phoneme_from_phone(phone, accent))
+
+        return phonemes
 
     def postprocess_text(self, input_text: str, word_infos: list[WordInfo]):
         result_text = input_text
