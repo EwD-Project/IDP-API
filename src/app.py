@@ -1,3 +1,31 @@
+"""
+IDP API Main Module
+
+This module defines the Flask application for the Intelligent Diacritic Placer (IDP) API.
+The API provides services for converting Standard English text to English with Diacritics (EwD) 
+and retrieving the phonetic representation of English text based on a specified accent.
+
+The module sets up the Flask application, configures Swagger for API documentation, 
+and defines the routes for the API's endpoints.
+
+Endpoints:
+    - GET /api/v1/get-phonetized-text: Returns the phonetic representation (phones) 
+      of a given English text based on a specified accent.
+    - POST /api/v1/convert-en-to-ewd: Converts Standard English text to English with Diacritics (EwD).
+
+The Flask application is configured to provide Swagger-based documentation under the '/swagger' route.
+
+Usage:
+    The application can be run locally by executing the module, which starts the Flask development server.
+    It can also be deployed as part of a larger web application stack.
+
+Dependencies:
+    - Flask: Web framework used to define and handle API routes.
+    - Flasgger: Extension for Swagger documentation.
+    - PhoneticsService: Service for phonetic conversion of text.
+    - TextService: Service for converting Standard English to EwD.
+"""
+
 from flask import Flask, request, jsonify
 from flask_swagger_ui import get_swaggerui_blueprint   # type: ignore
 from flasgger import Swagger   # type: ignore
@@ -22,10 +50,10 @@ app.register_blueprint(SWAGGER_BLUEPRINT, url_prefix=SWAGGER_URL)
 text_service = TextService()
 
 
-@app.route('/api/v1/get-phonefied-text', methods=['POST'])
-def get_phonefied_text():
+@app.route('/api/v1/get-phonetized-text', methods=['POST'])
+def get_phonetized_text():
     """
-    Returns the phonefied version of the provided text.
+    Returns the phonetized version of the provided text.
     ---
     parameters:
       - in: body
@@ -55,8 +83,8 @@ def get_phonefied_text():
     accent = request.json.get('accent', 'en-us')
 
     try:
-        result = PhoneticsService.phonefy_text(text, accent)
-        return jsonify({'phonefied_text': result}), 200
+        result = PhoneticsService.phonetize_text(text, accent)
+        return jsonify({'phonetized_text': result}), 200
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 

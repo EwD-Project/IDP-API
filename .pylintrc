@@ -1,8 +1,10 @@
 [MESSAGES CONTROL]
 disable=
     missing-module-docstring,
+    fixme,
+    import-error,
     broad-exception-caught,
     line-too-long
 
-[MASTER]
-init-hook="from pylint.config import find_pylintrc; import os, sys; sys.path.append(os.path.dirname(find_pylintrc()))"
+; [MASTER]
+; init-hook="from pylint.config import find_pylintrc; import os, sys; sys.path.append(os.path.dirname(find_pylintrc()))"

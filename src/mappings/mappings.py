@@ -1,7 +1,12 @@
+"""
+This module contains mappings used in the IDP API for converting phonetic representations (phone combinations)
+to their corresponding phonemes. These mappings are specific to different accents and the phonetization backend used.
+"""
 from enums.phoneme import Phoneme
 
-
-phone_to_phoneme_mapping = {
+# Mappings from phone combinations to Phonemes for various accents and potential backends.
+# Currently, the only mapping provided is for the espeak backend, but the object can be extended to include others.
+phone_comb_to_phoneme_mapping = {
     'espeak': {
         'en-us': {
             # Paired Vowels
@@ -13,7 +18,7 @@ phone_to_phoneme_mapping = {
             'ɪ': Phoneme.short_i,
             'ᵻ': Phoneme.short_i,
             'o͡ʊ': Phoneme.long_o,
-            'ɑː': Phoneme.short_o,
+            'ɑ': Phoneme.short_o,
             'juː': Phoneme.long_u,
             'ʌ': Phoneme.short_u,
             'uː': Phoneme.long_oo,
@@ -27,7 +32,7 @@ phone_to_phoneme_mapping = {
             'ɐ': Phoneme.schwa,
             'ə': Phoneme.schwa,
 
-            # TODO: from here below, pending
+            # TODO: From here below, pending.
 
             # Rhotic Vowels
             # 'ɑː͡ɹ': Phone
