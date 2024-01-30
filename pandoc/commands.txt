@@ -1,0 +1,22 @@
+general:
+
+ > pandoc input.md -o output.odt
+
+ > pandoc path_to_file.md -s -o path_to_file.pdf --variable geometry:margin=2cm -V mainfont="Linux Libertine"
+
+Eisvogel template:
+
+ > pandoc input.md -o output.pdf --pdf-engine=xelatex --template=eisvogel --listings
+
+ > pandoc input.md -o output.pdf --pdf-engine=xelatex --template=eisvogel --variable mainfont="Linux Libertine" --variable sansfont="Noto Sans" --variable monofont="Linux Libertine Mono O" --listings
+
+ 
+
+current command:
+
+> pandoc "Plano de Pesquisa.md" -o "Plano de Pesquisa.pdf" \
+--pdf-engine=xelatex --template=eisvogel --listings \
+-V mainfont="Linux Libertine" \
+-V sansfont="DejaVu Sans" \
+-V monofont="Linux Libertine Mono O" \
+-V disable-header-and-footer

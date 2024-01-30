@@ -2,7 +2,7 @@
 
 ## Introduction
 
-The PI Project has introduced key nomenclature changes and a key new softare initiative. This document aims to clarify these updates, ensuring consistency and clarity across all communications and documentation.
+The PI Project has introduced key nomenclature changes and a key new software initiative. This document aims to clarify these updates, ensuring consistency and clarity across all communications and documentation.
 
 ## 1. The PI Project
 

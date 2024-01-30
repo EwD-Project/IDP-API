@@ -10,7 +10,7 @@ The Intelligent Diacritic Placer API (IDP API) is a Python and Flask—based app
 
 - Converts SE text to EwD format.
 - Supports different English accents for phonetic conversion.
-- Utilizes a unique phonetic-to-graphemic conversion process.
+- Utilizes a unique phonetic-graphemic conversion process based on EDS Grapheme-Phoneme Mapping.
 
 ## Installation
 
@@ -41,6 +41,14 @@ Start the API with `python app.py`. The API provides two main endpoints:
 - **Body Parameters:**
   - `text`: SE text to be converted to EwD.
   - `accent`: English accent for conversion (default is `en-us`).
+
+## Conversion Process
+
+The conversion from IP to IcA involves a two-step phonetic-graphemic transformation process:
+
+1. **Phonetic Conversion**: The input SE text is first converted into its phonetic representation (phonetized) based on the specified English accent. This process utilizes the `phonemizer` library to achieve accurate phonetic transcriptions.
+
+2. **Graphemic Mapping (EDS Grapheme-Phoneme Mapping)**: The phonetic data is then mapped to its corresponding EwD representation using EDS Grapheme-Phoneme Mapping. This mapping involves detailed conversion tables that pair specific phonemes with corresponding graphemes (letters with diacritics), effectively transforming the phonetic sequence into EwD.
 
 ## Documentation
 
