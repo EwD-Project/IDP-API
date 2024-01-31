@@ -9,8 +9,8 @@ A API Intelligent Diacritic Placer (IDP API) é uma aplicação baseada em Pytho
 ## Recursos
 
 - Converte textos em inglês padrão (IP) para o formato IcA.
-- Suporta diferentes sotaques ingleses para conversão fonética.
-- Utiliza um processo único de conversão fonética-grafêmica com base no mapamento grafema-fonema do SDPI.
+- Suporta diferentes sotaques de inglês.
+- Utiliza um processo único de conversão fonética-grafêmica com base no mapeamento grafema-fonema do SDPI.
 
 ## Instalação
 
@@ -21,8 +21,8 @@ A API Intelligent Diacritic Placer (IDP API) é uma aplicação baseada em Pytho
 
 Inicie a API com `python app.py`. A API fornece dois endpoints principais:
 
-1. `/api/v1/get-phonetized-text`: Aceita texto em IP e um sotaque inglês, retornando a versão fonetizada.
-2. `/api/v1/convert-en-to-ewd`: Converte texto em IP para IcA, considerando o sotaque inglês especificado.
+1. `/api/v1/get-phonetized-text`: Aceita texto em IP e um sotaque de inglês, retornando a versão fonetizada.
+2. `/api/v1/convert-en-to-ewd`: Converte texto em IP para IcA, considerando o sotaque especificado.
 
 ## Endpoints
 
@@ -32,7 +32,7 @@ Inicie a API com `python app.py`. A API fornece dois endpoints principais:
 - **Método:** `POST`
 - **Parâmetros do Corpo:**
   - `text`: Texto em IP a ser fonetizado.
-  - `accent`: Sotaque inglês para conversão fonética (padrão é `en-us`).
+  - `accent`: Sotaque de inglês para conversão (o padrão é `en-us`).
 
 ### Convert EN to IcA
 
@@ -40,15 +40,15 @@ Inicie a API com `python app.py`. A API fornece dois endpoints principais:
 - **Método:** `POST`
 - **Parâmetros do Corpo:**
   - `text`: Texto em IP a ser convertido para IcA.
-  - `accent`: Sotaque inglês para conversão (padrão é `en-us`).
+  - `accent`: Sotaque de inglês para conversão (o padrão é `en-us`).
 
 ## Processo de Conversão
 
 A conversão de IP para IcA envolve um processo de transformação fonética-grafêmica em duas etapas:
 
-1. **Conversão Fonética**: O texto em IP é primeiramente convertido em sua representação fonética (fonetizada) com base no sotaque inglês especificado. Este processo utiliza a biblioteca `phonemizer` para alcançar transcrições fonéticas precisas.
+1. **Conversão Fonética**: O texto em IP é primeiramente convertido em sua representação fonética (fonetizada) com base no sotaque de inglês especificado. Este processo utiliza a biblioteca `phonemizer` para alcançar transcrições fonéticas precisas.
 
-2. **Mapeamento Grafêmico (Mapamento Grafema-Fonema do SDPI)**: Os dados fonéticos são então mapeados para sua ripresentação correspondente em IcA usando o Mapamento Grafema-Fonema do SDPI. Este mapeamento envolve tabelas detalhadas de conversão que pareiam fonemas específicos com grafemas correspondentes (letras com diacríticos), transformando efetivamente a sequência fonética em IcA.
+2. **Mapeamento Grafêmico (Mapeamento Grafema-Fonema do SDPI)**: Os dados fonéticos são então mapeados para sua representação correspondente em IcA usando o Mapeamento Grafema-Fonema do SDPI. Este mapeamento envolve tabelas detalhadas de conversão que pareiam fonemas específicos com grafemas correspondentes (letras com diacríticos), transformando efetivamente o inglês padrão em IcA.
 
 ## Documentação
 
@@ -91,7 +91,7 @@ Assim como já é feito com o inglês, a IDP API pode ser adaptada para suportar
 
 A expansão para outros idiomas e sotaques envolve desafios como a necessidade de um conhecimento aprofundado das características fonéticas de cada língua e a disponibilidade de recursos fonéticos e lexicais detalhados. Além disso, é crucial considerar as particularidades culturais e linguísticas para garantir uma representação precisa e respeitosa dos idiomas.
 
-### Futuro da IDP API
+## Futuro da IDP API
 
 A visão futura da IDP API inclui a criação de uma plataforma robusta e versátil que possa servir como uma ferramenta valiosa para a educação e pesquisa linguística em diversos idiomas e sotaques, promovendo assim uma compreensão mais ampla e inclusiva das diversas formas de expressão humana ao redor do mundo.
 
