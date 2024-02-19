@@ -1,14 +1,14 @@
 © Danilo Florentino Maia, 2024
 
-# Readme da API IDP
+# Readme da IDP API
 
 ## Visão Geral
 
-A API Intelligent Diacritic Placer (IDP API) é uma aplicação baseada em Python e Flask, projetada para converter textos em inglês para o formato Inglês com Acentos (IcA). Esta API serve como uma ferramenta para pesquisa linguística e fins educacionais, especialmente no contexto do Projeto PI.
+A Intelligent Diacritic Placer API (IDP API) é uma aplicação baseada em Python e Flask, projetada para converter textos em inglês para o formato Inglês com Diacríticos (IcD). Esta API serve como uma ferramenta para pesquisa linguística e fins educacionais, especialmente no contexto do Projeto PI.
 
 ## Recursos
 
-- Converte textos em inglês padrão (IP) para o formato IcA.
+- Converte textos em inglês padrão (IP) para o formato IcD.
 - Suporta diferentes sotaques de inglês.
 - Utiliza um processo único de conversão fonética-grafêmica com base no mapeamento grafema-fonema do SDPI.
 
@@ -22,7 +22,7 @@ A API Intelligent Diacritic Placer (IDP API) é uma aplicação baseada em Pytho
 Inicie a API com `python app.py`. A API fornece dois endpoints principais:
 
 1. `/api/v1/get-phonetized-text`: Aceita texto em IP e um sotaque de inglês, retornando a versão fonetizada.
-2. `/api/v1/convert-en-to-ewd`: Converte texto em IP para IcA, considerando o sotaque especificado.
+2. `/api/v1/convert-en-to-ewd`: Converte texto em IP para IcD, considerando o sotaque especificado.
 
 ## Endpoints
 
@@ -34,21 +34,21 @@ Inicie a API com `python app.py`. A API fornece dois endpoints principais:
   - `text`: Texto em IP a ser fonetizado.
   - `accent`: Sotaque de inglês para conversão (o padrão é `en-us`).
 
-### Convert EN to IcA
+### Convert EN to IcD
 
 - **URL:** `/api/v1/convert-en-to-ewd`
 - **Método:** `POST`
 - **Parâmetros do Corpo:**
-  - `text`: Texto em IP a ser convertido para IcA.
+  - `text`: Texto em IP a ser convertido para IcD.
   - `accent`: Sotaque de inglês para conversão (o padrão é `en-us`).
 
 ## Processo de Conversão
 
-A conversão de IP para IcA envolve um processo de transformação fonética-grafêmica em duas etapas:
+A conversão de IP para IcD envolve um processo de transformação fonética-grafêmica em duas etapas:
 
 1. **Conversão Fonética**: O texto em IP é primeiramente convertido em sua representação fonética (fonetizada) com base no sotaque de inglês especificado. Este processo utiliza a biblioteca `phonemizer` para alcançar transcrições fonéticas precisas.
 
-2. **Mapeamento Grafêmico (Mapeamento Grafema-Fonema do SDPI)**: Os dados fonéticos são então mapeados para sua representação correspondente em IcA usando o Mapeamento Grafema-Fonema do SDPI. Este mapeamento envolve tabelas detalhadas de conversão que pareiam fonemas específicos com grafemas correspondentes (letras com diacríticos), transformando efetivamente o inglês padrão em IcA.
+2. **Mapeamento Grafêmico (Mapeamento Grafema-Fonema do SDPI)**: Os dados fonéticos são então mapeados para sua representação correspondente em IcD usando o Mapeamento Grafema-Fonema do SDPI. Este mapeamento envolve tabelas detalhadas de conversão que pareiam fonemas específicos com grafemas correspondentes (letras com diacríticos), transformando efetivamente o inglês padrão em IcD.
 
 ## Documentação
 
@@ -77,7 +77,7 @@ A IDP API é construída como uma arquitetura monolítica com foco em simplicida
 
 ### Possibilidades de Expansão
 
-A IDP API, atualmente focada na conversão do Inglês Padrão para Inglês com Acentos, foi projetada com uma arquitetura que permite expansão para outros idiomas e uma variedade de sotaques. Este potencial de expansão abre novas frentes para pesquisa linguística e aplicações educacionais em um contexto global.
+A IDP API, atualmente focada na conversão do Inglês Padrão para Inglês com Diacríticos (IcD), foi projetada com uma arquitetura que permite expansão para outros idiomas e uma variedade de sotaques. Este potencial de expansão abre novas frentes para pesquisa linguística e aplicações educacionais em um contexto global.
 
 ### Suporte a Diferentes Idiomas
 
