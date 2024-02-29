@@ -10,7 +10,7 @@ The overarching initiative will continue to be referred to as the "PI Project." 
 
 ## 2. Refinement in the Nomenclature
 
-A significant evolution has occurred in the naming conventions related to the diacritical systems and scaffold-spelling. This evolution is represented as follows:
+A significant evolution has occurred in the naming conventions related to the then-called "PI Scaffold-Spelling". This evolution is represented as follows:
 
 ### 2.1. English Nomenclature
 
@@ -22,13 +22,13 @@ The term English Diacritical System (EDS) now represents the system for applying
 ### 2.2. Portuguese Nomenclature
 
 - **Formerly:** Ortografia Didática PI (PI or ODPI)
-- **Now:** Sistema Diacrítico para o Inglês (SDPI) and Inglês com Diacríticos (IcD)
+- **Now:** Sistema Diacrítico para o Inglês (SDI) and Inglês com Diacríticos (IcD)
 
-SDPI and IcD are the Portuguese translations for EDS and EwD, respectively. They are not different systems but rather the Portuguese names for the same concepts.
+SDI and IcD are the Portuguese translations for EDS and EwD, respectively. They are not different systems but rather the Portuguese names for the same concepts.
 
 ## 3. Intelligent Diacritic Placer API (IDP API)
 
-Originating in the EDS/EwD era, the Intelligent Diacritic Placer API (IDP API) is the project's main software initiative, focused on the automated and intelligent placement of diacritics in texts. Going forward, all references to this component will utilize the abbreviation "IDP API" for simplicity and consistency.
+Originating in the EDS/EwD era, the Intelligent Diacritic Placer API (IDP API) is the project's main software initiative, focused on the automated and intelligent placement of diacritics in texts. Going forward, all references to this component will utilize the abbreviations "IDP" or "IDP API" for simplicity and consistency.
 
 ---
 
