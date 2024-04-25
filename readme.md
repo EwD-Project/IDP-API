@@ -1,14 +1,14 @@
-© Danilo Florentino Maia, 2024
+© 2024 Danilo Florentino Maia. All rights reserved.
 
 # Readme da IDP API
 
 ## Visão Geral
 
-A Intelligent Diacritic Placer API (IDP API) é uma aplicação baseada em Python e Flask, projetada para converter textos em inglês para o formato Inglês com Diacríticos (IcD). Esta API serve como uma ferramenta para pesquisa linguística e fins educacionais, especialmente no contexto do Projeto PI.
+A Intelligent Diacritic Placer API (IDP API) é uma aplicação baseada em Python e Flask, projetada para converter textos em inglês para o formato Inglês com Diacríticos (EwD). Esta API serve como uma ferramenta para pesquisa linguística e fins educacionais, especialmente no contexto do Projeto EwD.
 
 ## Recursos
 
-- Converte textos em inglês padrão (IP) para o formato IcD.
+- Converte textos em inglês padrão (IP) para o formato EwD.
 - Suporta diferentes sotaques de inglês.
 - Utiliza um processo único de conversão fonética-grafêmica com base no mapeamento grafema-fonema do SDPI.
 
@@ -22,7 +22,7 @@ A Intelligent Diacritic Placer API (IDP API) é uma aplicação baseada em Pytho
 Inicie a API com `python app.py`. A API fornece dois endpoints principais:
 
 1. `/api/v1/get-phonetized-text`: Aceita texto em IP e um sotaque de inglês, retornando a versão fonetizada.
-2. `/api/v1/convert-en-to-ewd`: Converte texto em IP para IcD, considerando o sotaque especificado.
+2. `/api/v1/convert-en-to-ewd`: Converte texto em IP para EwD, considerando o sotaque especificado.
 
 ## Endpoints
 
@@ -34,21 +34,21 @@ Inicie a API com `python app.py`. A API fornece dois endpoints principais:
   - `text`: Texto em IP a ser fonetizado.
   - `accent`: Sotaque de inglês para conversão (o padrão é `en-us`).
 
-### Convert EN to IcD
+### Convert EN to EwD
 
 - **URL:** `/api/v1/convert-en-to-ewd`
 - **Método:** `POST`
 - **Parâmetros do Corpo:**
-  - `text`: Texto em IP a ser convertido para IcD.
+  - `text`: Texto em IP a ser convertido para EwD.
   - `accent`: Sotaque de inglês para conversão (o padrão é `en-us`).
 
 ## Processo de Conversão
 
-A conversão de IP para IcD envolve um processo de transformação fonética-grafêmica em duas etapas:
+A conversão de IP para EwD envolve um processo de transformação fonética-grafêmica em duas etapas:
 
 1. **Conversão Fonética**: O texto em IP é primeiramente convertido em sua representação fonética (fonetizada) com base no sotaque de inglês especificado. Este processo utiliza a biblioteca `phonemizer` para alcançar transcrições fonéticas precisas.
 
-2. **Mapeamento Grafêmico (Mapeamento Grafema-Fonema do SDPI)**: Os dados fonéticos são então mapeados para sua representação correspondente em IcD usando o Mapeamento Grafema-Fonema do SDPI. Este mapeamento envolve tabelas detalhadas de conversão que pareiam fonemas específicos com grafemas correspondentes (letras com diacríticos), transformando efetivamente o inglês padrão em IcD.
+2. **Mapeamento Grafêmico (Mapeamento Grafema-Fonema do SDPI)**: Os dados fonéticos são então mapeados para sua representação correspondente em EwD usando o Mapeamento Grafema-Fonema do SDPI. Este mapeamento envolve tabelas detalhadas de conversão que pareiam fonemas específicos com grafemas correspondentes (letras com diacríticos), transformando efetivamente o inglês padrão em EwD.
 
 ## Documentação
 
@@ -77,7 +77,7 @@ A IDP API é construída como uma arquitetura monolítica com foco em simplicida
 
 ### Possibilidades de Expansão
 
-A IDP API, atualmente focada na conversão do Inglês Padrão para Inglês com Diacríticos (IcD), foi projetada com uma arquitetura que permite expansão para outros idiomas e uma variedade de sotaques. Este potencial de expansão abre novas frentes para pesquisa linguística e aplicações educacionais em um contexto global.
+A IDP API, atualmente focada na conversão do Inglês Padrão para Inglês com Diacríticos (EwD), foi projetada com uma arquitetura que permite expansão para outros idiomas e uma variedade de sotaques. Este potencial de expansão abre novas frentes para pesquisa linguística e aplicações educacionais em um contexto global.
 
 ### Suporte a Diferentes Idiomas
 
@@ -97,16 +97,13 @@ A visão futura da IDP API inclui a criação de uma plataforma robusta e versá
 
 ## Contribuições
 
-Como este é um projeto privado atualmente em desenvolvimento para a pesquisa do Projeto PI, as contribuições são limitadas apenas a membros da equipe autorizados. Para consultas sobre envolvimento ou colaboração, por favor, envie uma mensagem de e-mail para [contact@thipimethod.org](mailto:contact@thipimethod.org).
+Como este é um projeto privado atualmente em desenvolvimento para a pesquisa do Projeto EwD, as contribuições são limitadas apenas a membros da equipe autorizados. Para consultas sobre envolvimento ou colaboração, por favor, envie uma mensagem de e-mail para [contact@ewdproject.org](mailto:contact@ewdproject.org).
 
 ## Contato
 
-Para consultas ou assistência, entre em contato com [contact@thipimethod.org](mailto:contact@thipimethod.org).
-
-## Licença
-
-Este projeto é licenciado sob a Licença Internacional Creative Commons Attribution 4.0. Para visualizar uma cópia desta licença, visite [http://creativecommons.org/licenses/by/4.0/](http://creativecommons.org/licenses/by/4.0/) ou envie uma carta para Creative Commons, PO Box 1866, Mountain View, CA 94042, USA.
+Para consultas ou assistência, entre em contato com [contact@ewdproject.org](mailto:contact@ewdproject.org).
 
 ---
 
-© Danilo Florentino Maia, 2024
+© 2024 Danilo Florentino Maia. All rights reserved.
+Unauthorized copying, modification, distribution, or use of this repository's software or documentation is strictly prohibited.
